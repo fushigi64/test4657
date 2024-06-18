@@ -1,0 +1,16 @@
+import java.util.Arrays;
+
+public class RunLengthEncoding {
+    public static void main(String[] args) {
+        String result = Arrays.stream("aaaaaaaaaaaa".split("(?<=(.))(?!\\1)"))
+                .flatMap(s -> {
+                    int length = s.length();
+                    return length < 10 ?
+                            Arrays.stream(new String[]{s.charAt(0) + (length > 1 ? String.valueOf(length - 1) : "")}) :
+                            Arrays.stream(String.valueOf(length - 1).split("")).map(digit -> s.charAt(0) + digit);
+                })
+                .reduce("", (acc, s) -> acc + s);
+
+        System.out.println(result);
+    }
+}
