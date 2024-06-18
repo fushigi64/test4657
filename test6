@@ -1,0 +1,20 @@
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public class RunLengthEncoding {
+    public static void main(String[] args) {
+        String result = "aaaaaaaaaaaaa".chars()
+                .mapToObj(c -> String.valueOf((char) c))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .flatMap(entry -> {
+                    String encodedLength = String.valueOf(entry.getValue());
+                    return encodedLength.chars()
+                            .mapToObj(digit -> entry.getKey() + (char) digit);
+                })
+                .reduce("", (acc, s) -> acc + s);
+        
+        System.out.println(result);
+    }
+}
