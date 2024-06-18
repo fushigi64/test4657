@@ -1,0 +1,27 @@
+import java.util.Arrays;
+
+public class RunLengthEncoding {
+    public static void main(String[] args) {
+        String input = "aaaaaaaaaaaa";
+        String result = encodeRunLength(input);
+        System.out.println(result);
+    }
+
+    private static String encodeRunLength(String input) {
+        return Arrays.stream(input.split("(?<=(.))(?!\\1)"))
+                .flatMap(RunLengthEncoding::splitSubstring)
+                .reduce("", String::concat);
+    }
+
+    private static Arrays splitSubstring(String substring) {
+        int length = substring.length();
+        char firstChar = substring.charAt(0);
+
+        if (length < 10) {
+            return Arrays.stream(new String[]{firstChar + (length > 1 ? String.valueOf(length - 1) : "")});
+        } else {
+            return Arrays.stream(String.valueOf(length - 1).split(""))
+                    .map(digit -> firstChar + digit);
+        }
+    }
+}
