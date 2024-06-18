@@ -1,0 +1,26 @@
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class Main {
+    public static void main(String[] args) {
+        Map<String, Long> charCounts = "aaaaaaaaaaaaa".chars()
+                .mapToObj(c -> String.valueOf((char) c))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        String result = charCounts.entrySet()
+                .stream()
+                .flatMap(entry -> {
+                    String ch = entry.getKey();
+                    long count = entry.getValue();
+                    return Stream.concat(
+                            Stream.of(ch + (count > 9 ? "9" : count == 1 ? "" : String.valueOf(count - 1))),
+                            count > 11 ? Stream.of(ch + (count - 11 == 1 ? "" : String.valueOf(count - 11 - 1))) : Stream.empty()
+                    ).filter(s -> !s.equals(ch));
+                })
+                .reduce("", (acc, s) -> acc + s);
+
+        System.out.println(result);
+    }
+}
