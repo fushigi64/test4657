@@ -1,16 +1,16 @@
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class RunLengthEncoding {
     public static void main(String[] args) {
-        String result = Arrays.stream("aaaaaaaaaaaa".split("(?<=(.))(?!\\1)"))
+        String result = Arrays.stream("aaaaaaaaaaaaa".split("(?<=(.))(?!\\1)"))
                 .flatMap(s -> {
-                    int length = s.length();
-                    return length < 10 ?
-                            Arrays.stream(new String[]{s.charAt(0) + (length > 1 ? String.valueOf(length - 1) : "")}) :
-                            Arrays.stream(String.valueOf(length - 1).split("")).map(digit -> s.charAt(0) + digit);
+                    String encodedString = String.valueOf(s.length() - 1);
+                    return encodedString.chars()
+                            .mapToObj(c -> s.charAt(0) + String.valueOf((char) c));
                 })
-                .reduce("", (acc, s) -> acc + s);
-
+                .collect(Collectors.joining());
+        
         System.out.println(result);
     }
 }
