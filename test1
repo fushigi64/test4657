@@ -1,0 +1,45 @@
+public class RunLengthEncoding {
+    public static void main(String[] args) {
+        String s = "abbccaaaab";
+        RLE1(s);
+
+    }
+    static RLE1(s){
+        String result = s.chars()
+                .mapToObj(c -> String.valueOf((char) c))
+                .reduce("", (acc, c) -> acc.isEmpty() || acc.charAt(acc.length() - 2) != c.charAt(0)
+                        ? acc + c + "1"
+                        : acc.substring(0, acc.length() - 1) + (Character.getNumericValue(acc.charAt(acc.length() - 1)) + 1));
+        
+        System.out.println(result);
+    }
+    static RLE2(s){
+        String result = s.chars()
+                .mapToObj(c -> String.valueOf((char) c))
+                .reduce("", (acc, c) -> {
+                    if (acc.isEmpty() || acc.charAt(acc.length() - 2) != c.charAt(0)) {
+                        return acc + c + "1";
+                    } else {
+                        int count = Character.getNumericValue(acc.charAt(acc.length() - 1)) + 1;
+                        return acc.substring(0, acc.length() - 1) + count;
+                    }
+                });
+        
+        System.out.println(result);
+    }
+    static void RLE3(s){
+        String result = Arrays.stream("abbcaabbbca".split("(?<=(.))(?!\\1)"))
+                .map(s -> s.charAt(0) + String.valueOf(s.length()))
+                .collect(Collectors.joining());
+
+        System.out.println(result);
+    }
+    static void RLE4(s){
+        String result = Arrays.stream("abbcaabbbca".split("(?<=(.))(?!\\1)"))
+                .map(s -> s.charAt(0) + String.valueOf(s.length()))
+                .reduce("", (acc, s) -> acc + s);
+        
+        System.out.println(result);
+    }
+    
+}
