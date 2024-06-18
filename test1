@@ -4,7 +4,7 @@ public class RunLengthEncoding {
         RLE1(s);
 
     }
-    static RLE1(s){
+    static void RLE1(s){
         String result = s.chars()
                 .mapToObj(c -> String.valueOf((char) c))
                 .reduce("", (acc, c) -> acc.isEmpty() || acc.charAt(acc.length() - 2) != c.charAt(0)
@@ -13,7 +13,7 @@ public class RunLengthEncoding {
         
         System.out.println(result);
     }
-    static RLE2(s){
+    static void RLE2(s){
         String result = s.chars()
                 .mapToObj(c -> String.valueOf((char) c))
                 .reduce("", (acc, c) -> {
