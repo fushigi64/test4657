@@ -1,0 +1,31 @@
+function onOpen() {
+  const ui = DocumentApp.getUi();
+  ui.createMenu("カスタムツール")
+    .addItem("ページ生成ツールを開く", "openSidebar")
+    .addToUi();
+}
+
+function openSidebar() {
+  const html = HtmlService.createHtmlOutputFromFile("sidebar")  
+                          .setTitle("ページ生成フォーム");
+  DocumentApp.getUi().showSidebar(html);
+}
+
+function generateWebPage(data) {
+  const docBody = DocumentApp.getActiveDocument().getBody().getText();
+  const replacedText = docBody
+    .replace("{{USER}}", data.user)
+    .replace("{{PROJECT}}", data.project);
+
+  const htmlContent = `
+    <html>
+      <head><title>生成ページ</title></head>
+      <body>
+        <h1>自動生成されたページ</h1>
+        <pre>${replacedText}</pre>
+      </body>
+    </html>
+  `;
+
+  return { html: htmlContent };
+}
