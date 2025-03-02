@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p>置き換え情報を入力してください</p>
+    <label>ユーザー: <input type="text" id="user"></label><br>
+    <label>プロジェクト: <input type="text" id="project"></label><br>
+    <button onclick="generate()">決定</button>
+
+    <script>
+      function generate() {
+        const data = {
+          user: document.getElementById("user").value,
+          project: document.getElementById("project").value
+        };
+        // Apps Script関数を呼び、生成ページのHTMLを取得
+        google.script.run
+          .withSuccessHandler(displayPage)
+          .generateWebPage(data);
+      }
+
+      function displayPage(result) {
+        // result.html をサイドバー上にインラインで表示（例）
+        // あるいは別タブで開くボタンを出す等、お好みで実装
+        const newWin = window.open("", "_blank");
+        newWin.document.write(result.html);
+        newWin.document.close();
+      }
+    </script>
+  </body>
+</html>
